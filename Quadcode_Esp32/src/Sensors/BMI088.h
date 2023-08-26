@@ -1,4 +1,5 @@
 #include<Wire.h>
+#include <Arduino.h>
 //Register specification for sensor BMI088 
 
 //Accelerometer registers map
@@ -187,7 +188,7 @@ void BMI088_GYRO_RAW(BMI088_DATA* BMI088_DATA_X)
     Wire.write(BMI088_GYRO_RATE_X_LSB);
     Wire.endTransmission();
     Wire.requestFrom(BMI088_ADDRESS_GYRO,6);
-    BMI088_DATA_X->Gyro_X = (Wire.read())+(Wire.read()<<8);
+    BMI088_DATA_X->Gyro_X = (Wire.read());
     BMI088_DATA_X->Gyro_X = Wire.read()<<8 | BMI088_DATA_X->Gyro_X;
     BMI088_DATA_X->Gyro_Y = Wire.read();
     BMI088_DATA_X->Gyro_Y = Wire.read()<<8 | BMI088_DATA_X->Gyro_Y;
@@ -209,3 +210,17 @@ void BMI088_ACC_GYRO(BMI088_DATA* BMI088_DATA_X)
 }
 
 //Do the self test in the future 
+
+void BMI088_TEST(BMI088_DATA* BMI088_DATA_X)
+{
+    BMI088_GYRO_RAW(BMI088_DATA_X);
+    BMI088_ACC_RAW(BMI088_DATA_X);
+    BMI088_ACC_GYRO(BMI088_DATA_X);
+    Serial.print("Acc_x: ");
+    Serial.print(BMI088_DATA_X->Acc_X_R);
+    Serial.print("Acc_y: ");
+    Serial.print(BMI088_DATA_X->Acc_Y_R);
+    Serial.print("Acc_z: ");
+    Serial.print(BMI088_DATA_X->Acc_Z_R);
+    Serial.println();
+}

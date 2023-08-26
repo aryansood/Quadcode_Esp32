@@ -1,5 +1,5 @@
 #include <Wire.h>
-
+#include <Arduino.h>
 #define BMP388_CMD      0x7E
 #define BMP388_CONFIG   0x1F
 #define BMP388_ODR      0x1D
@@ -85,3 +85,11 @@ void BMP388_PRESS_RAW(BMP388_DATA* BMP388_DATA_X)
     BMP388_DATA_X->Pressure = (Wire.read()<<15)| BMP388_DATA_X->Pressure;
 }
 //Do the self test in the future 
+
+void BMP388_PRESS_TEST(BMP388_DATA* BMP388_DATA_X)
+{
+    BMP388_PRESS_RAW(BMP388_DATA_X);
+    Serial.print("Pressure_Raw: ");
+    Serial.print(BMP388_DATA_X->Pressure);
+    Serial.println();
+}

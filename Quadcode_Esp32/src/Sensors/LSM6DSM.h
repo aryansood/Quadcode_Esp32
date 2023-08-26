@@ -193,6 +193,7 @@ void LSM6DSM_TEST(LSM6DSM_DATA* LSM6DSM_DATA_X)
     Serial.print(LSM6DSM_DATA_X->Acc_Y_R);
     Serial.print("Acc_z: ");
     Serial.print(LSM6DSM_DATA_X->Acc_Z_R);
+    Serial.println();
 }
 
 /*

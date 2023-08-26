@@ -1,5 +1,5 @@
 #include <Wire.h>
-
+#include <Arduino.h>
 //Register specification for sensor LIS2MDL
 
 //Offset configuration registers
@@ -75,8 +75,15 @@ void LIS2MDL_MAG_RAW(LIS2MDL_DATA* LIS2MDL_DATA_X)
     LIS2MDL_DATA_X->Mag_Z = Wire.read()<<8 | LIS2MDL_DATA_X->Mag_Z;
 }
 
-void LIS2MDL_MAG()
+void LIS2MDL_MAG_TEST(LIS2MDL_DATA* LIS2MDL_DATA_X)
 {
-
+    LIS2MDL_MAG_RAW(LIS2MDL_DATA_X);
+    Serial.print("Mag_x: ");
+    Serial.print(LIS2MDL_DATA_X->Mag_X);
+    Serial.print("Mag_x: ");
+    Serial.print(LIS2MDL_DATA_X->Mag_Y);
+    Serial.print("Mag_x: ");
+    Serial.print(LIS2MDL_DATA_X->Mag_Z);
+    Serial.println();
 }
 //Do the self test in the future 
