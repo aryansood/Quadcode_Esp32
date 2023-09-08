@@ -63,9 +63,9 @@ struct CALIBRATION_PARAMETERS
     int16_t PAR_P9_R;
     int8_t PAR_P10_R;
     int8_t PAR_P11_R;
-    
-    float CALI_PARA_T[3];
-    float CALI_PARA_P[11];
+
+    double CALI_PARA_T[3];
+    double CALI_PARA_P[11];
 };
 
 struct BMP388_DATA
@@ -118,35 +118,40 @@ void BMP388_CALIBRATION_PARAMETERS(CALIBRATION_PARAMETERS* BMP388_CALI_DATA)
     //TEMPERATURE CALI PARAMETERS
     BMP388_CALI_DATA->PAR_T1_R = Wire.read();
     BMP388_CALI_DATA->PAR_T1_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_T1_R;
+
     BMP388_CALI_DATA->PAR_T2_R = Wire.read();
     BMP388_CALI_DATA->PAR_T2_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_T2_R;
+
     BMP388_CALI_DATA->PAR_T3_R = Wire.read();
-    BMP388_CALI_DATA->PAR_T3_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_T3_R;
     //PRESSURE CALI PARAMETERS
     BMP388_CALI_DATA->PAR_P1_R = Wire.read();
     BMP388_CALI_DATA->PAR_P1_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P1_R;
+
     BMP388_CALI_DATA->PAR_P2_R = Wire.read();
     BMP388_CALI_DATA->PAR_P2_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P2_R;
+
     BMP388_CALI_DATA->PAR_P3_R = Wire.read();
-    BMP388_CALI_DATA->PAR_P3_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P3_R;
+
     BMP388_CALI_DATA->PAR_P4_R = Wire.read();
-    BMP388_CALI_DATA->PAR_P4_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P4_R;
+
     BMP388_CALI_DATA->PAR_P5_R = Wire.read();
     BMP388_CALI_DATA->PAR_P5_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P5_R;
+
     BMP388_CALI_DATA->PAR_P6_R = Wire.read();
     BMP388_CALI_DATA->PAR_P6_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P6_R;
+
     BMP388_CALI_DATA->PAR_P7_R = Wire.read();
-    BMP388_CALI_DATA->PAR_P7_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P7_R;
+    
     BMP388_CALI_DATA->PAR_P8_R = Wire.read();
-    BMP388_CALI_DATA->PAR_P8_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P8_R;
+    
     BMP388_CALI_DATA->PAR_P9_R = Wire.read();
     BMP388_CALI_DATA->PAR_P9_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P9_R;
+
     BMP388_CALI_DATA->PAR_P10_R = Wire.read();
-    BMP388_CALI_DATA->PAR_P10_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P10_R;
-    BMP388_CALI_DATA->PAR_P10_R = Wire.read();
-    BMP388_CALI_DATA->PAR_P10_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P10_R;
+    
     BMP388_CALI_DATA->PAR_P11_R = Wire.read();
-    BMP388_CALI_DATA->PAR_P11_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P11_R;
+    
+    //DOuble convertion
 
 }
 
