@@ -4,6 +4,9 @@ I have referenced to a few explanation: \
 https://github.com/derdoktor667/DShotRMT \
 https://brushlesswhoop.com/dshot-and-bidirectional-dshot/ \
 https://github.com/Marian-Vittek/raspberry-pi-dshot \
-The code of the first implemntation did not worked, there were some timing issues that I will show how to resolve.
+The code of the first implemntation did not worked.
+After understanding more of the protocol I will show how to modify my code if there are some timing issues on you esp32.
+You will be required to use a digital analyzer, in case the code will not work.
+
 
 

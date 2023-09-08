@@ -41,9 +41,32 @@
 #define BMP388_OSR_16   0X04
 #define BMP388_OSR_32   0X05
 
+//Address for calibration parameters
+#define BMP388_CALI_START 0x31
+
 #define BMP388_ADDRESS 0x76
 //#define BMP388_ADDRESS 0x77
 
+struct CALIBRATION_PARAMETERS
+{
+    uint16_t PAR_T1_R;
+    uint16_t PAR_T2_R;
+    int8_t PAR_T3_R;
+    int16_t PAR_P1_R;
+    int16_t PAR_P2_R;
+    int8_t PAR_P3_R;
+    int8_t PAR_P4_R;
+    uint16_t PAR_P5_R;
+    uint16_t PAR_P6_R;
+    int8_t PAR_P7_R;
+    int8_t PAR_P8_R;
+    int16_t PAR_P9_R;
+    int8_t PAR_P10_R;
+    int8_t PAR_P11_R;
+    
+    float CALI_PARA_T[3];
+    float CALI_PARA_P[11];
+};
 
 struct BMP388_DATA
 {
@@ -51,6 +74,7 @@ struct BMP388_DATA
     double Pressure_real;
 };
 
+struct CALIBRATION_PARAMETERS CALI_PARA;
 
 void BMP388_SETUP()
 {
@@ -84,6 +108,58 @@ void BMP388_PRESS_RAW(BMP388_DATA* BMP388_DATA_X)
     BMP388_DATA_X->Pressure = (Wire.read()<<7) | BMP388_DATA_X->Pressure;
     BMP388_DATA_X->Pressure = (Wire.read()<<15)| BMP388_DATA_X->Pressure;
 }
+
+void BMP388_CALIBRATION_PARAMETERS(CALIBRATION_PARAMETERS* BMP388_CALI_DATA)
+{
+    Wire.beginTransmission(BMP388_ADDRESS);
+    Wire.write(BMP388_CALI_START);
+    Wire.endTransmission();
+    Wire.requestFrom(BMP388_ADDRESS,21);
+    //TEMPERATURE CALI PARAMETERS
+    BMP388_CALI_DATA->PAR_T1_R = Wire.read();
+    BMP388_CALI_DATA->PAR_T1_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_T1_R;
+    BMP388_CALI_DATA->PAR_T2_R = Wire.read();
+    BMP388_CALI_DATA->PAR_T2_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_T2_R;
+    BMP388_CALI_DATA->PAR_T3_R = Wire.read();
+    BMP388_CALI_DATA->PAR_T3_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_T3_R;
+    //PRESSURE CALI PARAMETERS
+    BMP388_CALI_DATA->PAR_P1_R = Wire.read();
+    BMP388_CALI_DATA->PAR_P1_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P1_R;
+    BMP388_CALI_DATA->PAR_P2_R = Wire.read();
+    BMP388_CALI_DATA->PAR_P2_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P2_R;
+    BMP388_CALI_DATA->PAR_P3_R = Wire.read();
+    BMP388_CALI_DATA->PAR_P3_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P3_R;
+    BMP388_CALI_DATA->PAR_P4_R = Wire.read();
+    BMP388_CALI_DATA->PAR_P4_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P4_R;
+    BMP388_CALI_DATA->PAR_P5_R = Wire.read();
+    BMP388_CALI_DATA->PAR_P5_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P5_R;
+    BMP388_CALI_DATA->PAR_P6_R = Wire.read();
+    BMP388_CALI_DATA->PAR_P6_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P6_R;
+    BMP388_CALI_DATA->PAR_P7_R = Wire.read();
+    BMP388_CALI_DATA->PAR_P7_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P7_R;
+    BMP388_CALI_DATA->PAR_P8_R = Wire.read();
+    BMP388_CALI_DATA->PAR_P8_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P8_R;
+    BMP388_CALI_DATA->PAR_P9_R = Wire.read();
+    BMP388_CALI_DATA->PAR_P9_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P9_R;
+    BMP388_CALI_DATA->PAR_P10_R = Wire.read();
+    BMP388_CALI_DATA->PAR_P10_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P10_R;
+    BMP388_CALI_DATA->PAR_P10_R = Wire.read();
+    BMP388_CALI_DATA->PAR_P10_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P10_R;
+    BMP388_CALI_DATA->PAR_P11_R = Wire.read();
+    BMP388_CALI_DATA->PAR_P11_R = (Wire.read()<<8) | BMP388_CALI_DATA->PAR_P11_R;
+
+}
+
+void BMP388_TEMP_CALIBRATION()
+{
+    
+}
+
+void BMP388_PRESS_CALIBRATION()
+{
+
+}
+
 //Do the self test in the future 
 
 void BMP388_PRESS_TEST(BMP388_DATA* BMP388_DATA_X)
