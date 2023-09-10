@@ -1,0 +1,60 @@
+Order of prociding:
+- Correctly rigth the sensor code
+- Kalman filtering Code
+- Communication simple one
+- Simple control
+- Communication complex one
+- Complex control
+
+
+BMP388:
+- Sensor Calibration
+- Sensor Testing
+- Converting raw data to readable
+
+LSM6DSM:
+- Check if there is some calibration to do
+- Sensor testing
+
+LIS2MDL:
+- Check how to calibrate
+- Sensor Testing
+- Converting raw data to readable
+
+BMP388:
+- Why registers gives only values of zero ?
+- Check how to calibrate
+- Converting raw data to readable
+- Sensor Testing 
+
+Filtering Kalman:
+- Start to implement a kalman filter
+- Check how to
+- Check how to determine covariance matrix
+- Filter Testing
+
+Parameter Estimation:
+- Found ways for Parameter estimation
+- Check if it reasonable to implement
+
+Simple Control:
+- Do a simple quadcopter movement up and down, left and right
+
+Communication:
+- Do a simple data transfer using just the simple esp32 wifi module to see if quadcopter
+  fly.
+- Check how to implement protocols
+- Creating ground station for data collection
+- Check if control commands are sent correctly
+
+Complex Control:
+- Something to do at last
+- Start creating a simulation environment
+- Tune the parameters
+
+Physics Quadcopter:
+- Create Pdf with the equation of motion of Quadcopter
+- See if it possible to use quaternions or euler angles are sufficient
+- Linearitation and everythingh else
+
+

@@ -47,6 +47,21 @@
 #define BMP388_ADDRESS 0x76
 //#define BMP388_ADDRESS 0x77
 
+//Definition of powers of 2
+#define POW_5 1<<5
+#define POW_6 1<<6
+#define POW_7 1<<7
+#define POW_8 1<<8
+#define POW_14 1<<14
+#define POW_15 1<<15
+#define POW_16 1<<16
+#define POW_18 1<<18
+#define POW_20 1<<20
+#define POW_29 1<<29
+#define POW_30 1<<30
+
+
+
 struct CALIBRATION_PARAMETERS
 {
     uint16_t PAR_T1_R;
@@ -64,14 +79,16 @@ struct CALIBRATION_PARAMETERS
     int8_t PAR_P10_R;
     int8_t PAR_P11_R;
 
-    double CALI_PARA_T[3];
-    double CALI_PARA_P[11];
+    double CALI_PARA_T[4];
+    double CALI_PARA_P[12];
 };
 
 struct BMP388_DATA
 {
     int Pressure;
+    int Temperature;
     double Pressure_real;
+    double Temperature_real;
 };
 
 struct CALIBRATION_PARAMETERS CALI_PARA;
@@ -151,21 +168,76 @@ void BMP388_CALIBRATION_PARAMETERS(CALIBRATION_PARAMETERS* BMP388_CALI_DATA)
     
     BMP388_CALI_DATA->PAR_P11_R = Wire.read();
     
-    //DOuble convertion
+    //Double convertion pressure
+    BMP388_CALI_DATA->CALI_PARA_T[1] = double(BMP388_CALI_DATA->PAR_T1_R)*double(POW_8);
+    BMP388_CALI_DATA->CALI_PARA_T[2] = double(BMP388_CALI_DATA->PAR_T2_R)/double(POW_30);
+    BMP388_CALI_DATA->CALI_PARA_T[3] = double(BMP388_CALI_DATA->PAR_T3_R)/double(POW_18);
+    BMP388_CALI_DATA->CALI_PARA_T[3] = double(BMP388_CALI_DATA->CALI_PARA_T[2])/double(POW_30);
 
+    //Double convertion temperature
+    BMP388_CALI_DATA->CALI_PARA_P[1] = double(BMP388_CALI_DATA->PAR_P1_R-POW_14)/double(POW_20);
+    BMP388_CALI_DATA->CALI_PARA_P[2] = double(BMP388_CALI_DATA->PAR_P2_R-POW_14)/double(POW_29);
+    BMP388_CALI_DATA->CALI_PARA_P[3] = double(BMP388_CALI_DATA->PAR_P3_R)/double(POW_16);
+    BMP388_CALI_DATA->CALI_PARA_P[3] = double(BMP388_CALI_DATA->CALI_PARA_P[2])/double(POW_16);
+
+    BMP388_CALI_DATA->CALI_PARA_P[4] = double(BMP388_CALI_DATA->PAR_P4_R)/double(POW_7);
+    BMP388_CALI_DATA->CALI_PARA_P[4] = double(BMP388_CALI_DATA->CALI_PARA_P[4])/double(POW_30);
+    BMP388_CALI_DATA->CALI_PARA_P[5] = double(BMP388_CALI_DATA->PAR_P5_R)*double(8);
+    BMP388_CALI_DATA->CALI_PARA_P[6] = double(BMP388_CALI_DATA->PAR_P6_R)/double(POW_6);
+
+    BMP388_CALI_DATA->CALI_PARA_P[7] = double(BMP388_CALI_DATA->PAR_P7_R)/double(POW_8);
+    BMP388_CALI_DATA->CALI_PARA_P[8] = double(BMP388_CALI_DATA->PAR_P8_R)/double(POW_15);
+    BMP388_CALI_DATA->CALI_PARA_P[9] = double(BMP388_CALI_DATA->PAR_P9_R)/double(POW_16);
+    BMP388_CALI_DATA->CALI_PARA_P[9] = double(BMP388_CALI_DATA->CALI_PARA_P[9])/double(POW_16);
+
+    BMP388_CALI_DATA->CALI_PARA_P[10] = double(BMP388_CALI_DATA->PAR_P10_R)/double(POW_15);
+    BMP388_CALI_DATA->CALI_PARA_P[11] = double(BMP388_CALI_DATA->PAR_P11_R)/double(POW_30);
+    BMP388_CALI_DATA->CALI_PARA_P[11] = double(BMP388_CALI_DATA->CALI_PARA_P[11])/double(POW_30);
+    BMP388_CALI_DATA->CALI_PARA_P[11] = double(BMP388_CALI_DATA->CALI_PARA_P[11])/double(POW_5);
 }
 
-void BMP388_TEMP_CALIBRATION()
+void BMP388_TEMP_CALIBRATION(BMP388_DATA* BMP388_DATA_X, CALIBRATION_PARAMETERS* BMP388_CALI_DATA)
 {
+    double partial_data1;
+    double partial_data2;
     
+    double data_converted;
+
+    partial_data1 = double(BMP388_DATA_X->Temperature-BMP388_CALI_DATA->CALI_PARA_T[1]);
+    partial_data2 = double(partial_data1*BMP388_CALI_DATA->CALI_PARA_T[2]);
+    data_converted = partial_data2 + (partial_data1*partial_data1)*BMP388_CALI_DATA->CALI_PARA_T[3];
+    BMP388_DATA_X->Temperature_real = data_converted;
 }
 
-void BMP388_PRESS_CALIBRATION()
+void BMP388_PRESS_CALIBRATION(BMP388_DATA* BMP388_DATA_X, CALIBRATION_PARAMETERS* BMP388_CALI_DATA)
 {
+    double comp_press;
+    double partial_data1;
+    double partial_data2;
+    double partial_data3;
+    double partial_data4;
+    double partial_out1;
+    double partial_out2; 
+
+    partial_data1 = BMP388_CALI_DATA->CALI_PARA_P[6]*BMP388_DATA_X->Temperature_real;
+    partial_data2 = BMP388_CALI_DATA->CALI_PARA_P[7]*(BMP388_DATA_X->Temperature_real*BMP388_DATA_X->Temperature_real);
+    partial_data3 = BMP388_CALI_DATA->CALI_PARA_P[8]*(BMP388_DATA_X->Temperature_real*BMP388_DATA_X->Temperature_real*BMP388_DATA_X->Temperature_real);
+    partial_out1  = BMP388_CALI_DATA->CALI_PARA_P[5]+ partial_data1 + partial_data2 + partial_data3;
+
+    partial_data1 = BMP388_CALI_DATA->CALI_PARA_P[2]*BMP388_DATA_X->Temperature_real;
+    partial_data2 = BMP388_CALI_DATA->CALI_PARA_P[3]*(BMP388_DATA_X->Temperature_real*BMP388_DATA_X->Temperature_real);
+    partial_data3 = BMP388_CALI_DATA->CALI_PARA_P[4]*(BMP388_DATA_X->Temperature_real*BMP388_DATA_X->Temperature_real*BMP388_DATA_X->Temperature_real);
+    partial_out1  = double(BMP388_DATA_X->Pressure)*(BMP388_CALI_DATA->CALI_PARA_P[1]+ partial_data1 + partial_data2 + partial_data3);
+
+    partial_data1 = double(BMP388_DATA_X->Pressure) * double(BMP388_DATA_X->Pressure);
+    partial_data2 = BMP388_CALI_DATA->CALI_PARA_P[9] + BMP388_CALI_DATA->CALI_PARA_P[9] * BMP388_DATA_X->Temperature_real;
+    partial_data3 = partial_data1 * partial_data2;
+    partial_data4 = partial_data3 + (double(BMP388_DATA_X->Pressure) * double(BMP388_DATA_X->Pressure) * double(BMP388_DATA_X->Pressure)) * BMP388_CALI_DATA->CALI_PARA_P[11];
+    comp_press = partial_out1 + partial_out2 + partial_data4;
+    BMP388_DATA_X->Pressure_real = comp_press;
 
 }
 
-//Do the self test in the future 
 
 void BMP388_PRESS_TEST(BMP388_DATA* BMP388_DATA_X)
 {
