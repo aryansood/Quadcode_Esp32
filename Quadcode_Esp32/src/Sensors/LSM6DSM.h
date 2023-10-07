@@ -94,141 +94,108 @@
  #define LSM6DSM_ADDRESS 0x6A
 //#define LSM6DSM_ADDRESS 0x6B
 
-struct LSM6DSM_DATA
-{
-    int16_t Acc_X;
-    int16_t Acc_Y;
-    int16_t Acc_Z;
-    int16_t Gyro_X;
-    int16_t Gyro_Y;
-    int16_t Gyro_Z;
-    double Acc_X_R;
-    double Acc_Y_R;
-    double Acc_Z_R;
-    double Gyro_X_R;
-    double Gyro_Y_R;
-    double Gyro_Z_R;
+class LSM6DSM_SENSOR {
+public:
+    struct LSM6DSM_DATA
+    {
+        int16_t Acc_X;
+        int16_t Acc_Y;
+        int16_t Acc_Z;
+        int16_t Gyro_X;
+        int16_t Gyro_Y;
+        int16_t Gyro_Z;
+        double Acc_X_R;
+        double Acc_Y_R;
+        double Acc_Z_R;
+        double Gyro_X_R;
+        double Gyro_Y_R;
+        double Gyro_Z_R;
+    };
+
+    LSM6DSM_DATA* LSM6DSM_DATA_X;
+
+    LSM6DSM_SENSOR() {
+        LSM6DSM_DATA_X = new LSM6DSM_DATA;
+    }
+
+    void LSM6DSM_SETUP()
+    {
+        Wire.beginTransmission(LSM6DSM_ADDRESS);
+        Wire.write(LSM6DSM_CTRL1_XL);
+        Wire.write(ACC_ODR_6660<<4 | ACC_SEN_2<<2);
+        Wire.endTransmission();
+
+        Wire.beginTransmission(LSM6DSM_ADDRESS);
+        Wire.write(LSM6DSM_CTRL2_G);
+        Wire.write(GYRO_ODR_6660<<4 | GYRO_SEN_500<<2);
+        Wire.endTransmission();
+    }
+
+    void LSM6DSM_RESET()
+    {
+        Wire.beginTransmission(LSM6DSM_ADDRESS);
+        Wire.write(LSM6DSM_CTRL3_C);
+        Wire.write(0x01);
+        Wire.endTransmission();
+        delay(1000);
+        Wire.beginTransmission(LSM6DSM_ADDRESS);
+        Wire.write(LSM6DSM_CTRL3_C);
+        Wire.write(0x01<<7);
+        Wire.endTransmission();
+        delay(1000);
+    }
+
+    void LSM6DSM_GYRO_RAW()
+    {
+        Wire.beginTransmission(LSM6DSM_ADDRESS);
+        Wire.write(LSM6DSM_OUTX_L_G);
+        Wire.endTransmission();
+        Wire.requestFrom(LSM6DSM_ADDRESS,6);
+        LSM6DSM_DATA_X->Gyro_X = (Wire.read())+(Wire.read()<<8);
+        LSM6DSM_DATA_X->Gyro_X = Wire.read()<<8 | LSM6DSM_DATA_X->Gyro_X;
+        LSM6DSM_DATA_X->Gyro_Y = Wire.read();
+        LSM6DSM_DATA_X->Gyro_Y = Wire.read()<<8 | LSM6DSM_DATA_X->Gyro_Y;
+        LSM6DSM_DATA_X->Gyro_Z = Wire.read();
+        LSM6DSM_DATA_X->Gyro_Z = Wire.read()<<8 | LSM6DSM_DATA_X->Gyro_Z;
+    }
+
+    void LSM6DSM_ACC_RAW()
+    {
+        Wire.beginTransmission(LSM6DSM_ADDRESS);
+        Wire.write(LSM6DSM_OUTX_L_XL);
+        Wire.endTransmission();
+        Wire.requestFrom(LSM6DSM_ADDRESS,6);
+        LSM6DSM_DATA_X->Acc_X = (Wire.read());
+        LSM6DSM_DATA_X->Acc_X = Wire.read()<<8 | LSM6DSM_DATA_X->Acc_X;
+        LSM6DSM_DATA_X->Acc_Y = Wire.read();
+        LSM6DSM_DATA_X->Acc_Y = Wire.read()<<8 | LSM6DSM_DATA_X->Acc_Y;
+        LSM6DSM_DATA_X->Acc_Z = Wire.read();
+        LSM6DSM_DATA_X->Acc_Z = Wire.read()<<8 | LSM6DSM_DATA_X->Acc_Z;
+    }
+
+    void LSM6DSM_ACC_GYRO()
+    {
+        
+        LSM6DSM_DATA_X->Acc_X_R = float(LSM6DSM_DATA_X->Acc_X)*2.f/32768.f;
+        LSM6DSM_DATA_X->Acc_Y_R = float(LSM6DSM_DATA_X->Acc_Y)*2.f/32768.f;
+        LSM6DSM_DATA_X->Acc_Z_R = float(LSM6DSM_DATA_X->Acc_Z)*2.f/32768.f;
+        LSM6DSM_DATA_X->Gyro_X_R = float(LSM6DSM_DATA_X->Gyro_X)*500.f/32768.f;
+        LSM6DSM_DATA_X->Gyro_Y_R = float(LSM6DSM_DATA_X->Gyro_Y)*500.f/32768.f;
+        LSM6DSM_DATA_X->Gyro_Z_R = float(LSM6DSM_DATA_X->Gyro_Z)*500.f/32768.f;
+    }
+    //Do the self test in the future 
+
+    void LSM6DSM_TEST()
+    {
+        LSM6DSM_GYRO_RAW();
+        LSM6DSM_ACC_RAW();
+        LSM6DSM_ACC_GYRO();
+        Serial.print("Acc_x: ");
+        Serial.print(LSM6DSM_DATA_X->Acc_X_R);
+        Serial.print("Acc_y: ");
+        Serial.print(LSM6DSM_DATA_X->Acc_Y_R);
+        Serial.print("Acc_z: ");
+        Serial.print(LSM6DSM_DATA_X->Acc_Z_R);
+        Serial.println();
+    }
 };
-
-void LSM6DSM_SETUP()
-{
-    Wire.beginTransmission(LSM6DSM_ADDRESS);
-    Wire.write(LSM6DSM_CTRL1_XL);
-    Wire.write(ACC_ODR_6660<<4 | ACC_SEN_2<<2);
-    Wire.endTransmission();
-
-    Wire.beginTransmission(LSM6DSM_ADDRESS);
-    Wire.write(LSM6DSM_CTRL2_G);
-    Wire.write(GYRO_ODR_6660<<4 | GYRO_SEN_500<<2);
-    Wire.endTransmission();
-}
-
-void LSM6DSM_RESET()
-{
-    Wire.beginTransmission(LSM6DSM_ADDRESS);
-    Wire.write(LSM6DSM_CTRL3_C);
-    Wire.write(0x01);
-    Wire.endTransmission();
-    delay(1000);
-    Wire.beginTransmission(LSM6DSM_ADDRESS);
-    Wire.write(LSM6DSM_CTRL3_C);
-    Wire.write(0x01<<7);
-    Wire.endTransmission();
-    delay(1000);
-}
-
-void LSM6DSM_GYRO_RAW(LSM6DSM_DATA* LSM6DSM_DATA_X)
-{
-    Wire.beginTransmission(LSM6DSM_ADDRESS);
-    Wire.write(LSM6DSM_OUTX_L_G);
-    Wire.endTransmission();
-    Wire.requestFrom(LSM6DSM_ADDRESS,6);
-    LSM6DSM_DATA_X->Gyro_X = (Wire.read())+(Wire.read()<<8);
-    LSM6DSM_DATA_X->Gyro_X = Wire.read()<<8 | LSM6DSM_DATA_X->Gyro_X;
-    LSM6DSM_DATA_X->Gyro_Y = Wire.read();
-    LSM6DSM_DATA_X->Gyro_Y = Wire.read()<<8 | LSM6DSM_DATA_X->Gyro_Y;
-    LSM6DSM_DATA_X->Gyro_Z = Wire.read();
-    LSM6DSM_DATA_X->Gyro_Z = Wire.read()<<8 | LSM6DSM_DATA_X->Gyro_Z;
-}
-
-void LSM6DSM_ACC_RAW(LSM6DSM_DATA* LSM6DSM_DATA_X)
-{
-    Wire.beginTransmission(LSM6DSM_ADDRESS);
-    Wire.write(LSM6DSM_OUTX_L_XL);
-    Wire.endTransmission();
-    Wire.requestFrom(LSM6DSM_ADDRESS,6);
-    LSM6DSM_DATA_X->Acc_X = (Wire.read());
-    LSM6DSM_DATA_X->Acc_X = Wire.read()<<8 | LSM6DSM_DATA_X->Acc_X;
-    LSM6DSM_DATA_X->Acc_Y = Wire.read();
-    LSM6DSM_DATA_X->Acc_Y = Wire.read()<<8 | LSM6DSM_DATA_X->Acc_Y;
-    LSM6DSM_DATA_X->Acc_Z = Wire.read();
-    LSM6DSM_DATA_X->Acc_Z = Wire.read()<<8 | LSM6DSM_DATA_X->Acc_Z;
-}
-
-void LSM6DSM_ACC_GYRO(LSM6DSM_DATA* LSM6DSM_DATA_X)
-{
-    
-    LSM6DSM_DATA_X->Acc_X_R = float(LSM6DSM_DATA_X->Acc_X)*2.f/32768.f;
-    LSM6DSM_DATA_X->Acc_Y_R = float(LSM6DSM_DATA_X->Acc_Y)*2.f/32768.f;
-    LSM6DSM_DATA_X->Acc_Z_R = float(LSM6DSM_DATA_X->Acc_Z)*2.f/32768.f;
-    LSM6DSM_DATA_X->Gyro_X_R = float(LSM6DSM_DATA_X->Gyro_X)*500.f/32768.f;
-    LSM6DSM_DATA_X->Gyro_Y_R = float(LSM6DSM_DATA_X->Gyro_Y)*500.f/32768.f;
-    LSM6DSM_DATA_X->Gyro_Z_R = float(LSM6DSM_DATA_X->Gyro_Z)*500.f/32768.f;
-}
-//Do the self test in the future 
-
-void LSM6DSM_TEST_SETUP()
-{
-    LSM6DSM_SETUP();
-}
-
-void LSM6DSM_TEST(LSM6DSM_DATA* LSM6DSM_DATA_X)
-{
-    LSM6DSM_GYRO_RAW(LSM6DSM_DATA_X);
-    LSM6DSM_ACC_RAW(LSM6DSM_DATA_X);
-    LSM6DSM_ACC_GYRO(LSM6DSM_DATA_X);
-    Serial.print("Acc_x: ");
-    Serial.print(LSM6DSM_DATA_X->Acc_X_R);
-    Serial.print("Acc_y: ");
-    Serial.print(LSM6DSM_DATA_X->Acc_Y_R);
-    Serial.print("Acc_z: ");
-    Serial.print(LSM6DSM_DATA_X->Acc_Z_R);
-    Serial.println();
-}
-
-/*
-#include <Arduino.h>
-#include <Wire.h>
-#include<Sensors/LSM6DSM.h>
-#include<Sensors/LIS2MDL.h>
-#include<Sensors/BMI088.h>
-#include<Sensors/BMP388.h>
-
-LSM6DSM_DATA LSM6DSM_DATA_R;
-
-
-void setup() {
-  Wire.begin();
-  LSM6DSM_SETUP();
-  Serial.begin(9600);
-}
-
-void loop() {
-   LSM6DSM_GYRO_RAW(&LSM6DSM_DATA_R);
-   LSM6DSM_ACC_RAW(&LSM6DSM_DATA_R);
-   LSM6DSM_ACC_GYRO(&LSM6DSM_DATA_R);
-   Serial.print("Acc_x");
-   Serial.println();
-   Serial.print(LSM6DSM_DATA_R.Acc_X_R);
-   Serial.println();
-   Serial.print("Acc_y");
-   Serial.println();
-   Serial.print(LSM6DSM_DATA_R.Acc_Y_R);
-   Serial.println();
-   Serial.print("Acc_z");
-   Serial.println();
-   Serial.print(LSM6DSM_DATA_R.Acc_Z_R);
-   Serial.println();
-   delay(500);
-}
-*/

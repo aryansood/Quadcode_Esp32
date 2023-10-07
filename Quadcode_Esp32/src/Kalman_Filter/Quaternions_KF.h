@@ -1,0 +1,5 @@
+/*
+Quaternion based Euler angles rappresentation
+To do initialization quaternion rappresentation
+Calculation using Gyroscope entrypoints
+*/
