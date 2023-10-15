@@ -198,4 +198,6 @@ public:
         Serial.print(LSM6DSM_DATA_X->Acc_Z_R);
         Serial.println();
     }
+
+    //Do calibration of gyro and acc
 };

@@ -97,130 +97,140 @@
 #define BMI088_ADDRESS_GYRO 0x68
 //#define BMI088_ADDRESS_GYRO 0x69
 
-
-struct BMI088_DATA
+class BMI088_SENSOR
 {
-    int Acc_X;
-    int Acc_Y;
-    int Acc_Z;
-    int Gyro_X;
-    int Gyro_Y;
-    int Gyro_Z;
-    double Acc_X_R;
-    double Acc_Y_R;
-    double Acc_Z_R;
-    double Gyro_X_R;
-    double Gyro_Y_R;
-    double Gyro_Z_R;
+public:
+    struct BMI088_DATA
+    {
+        int16_t Acc_X;
+        int16_t Acc_Y;
+        int16_t Acc_Z;
+        int16_t Gyro_X;
+        int16_t Gyro_Y;
+        int16_t Gyro_Z;
+        double Acc_X_R;
+        double Acc_Y_R;
+        double Acc_Z_R;
+        double Gyro_X_R;
+        double Gyro_Y_R;
+        double Gyro_Z_R;
+    };
+
+    BMI088_DATA* BMI088_DATA_X;
+
+    BMI088_SENSOR()
+    {
+        BMI088_DATA_X = new BMI088_DATA;
+    }
+
+    void BMI088_SETUP()
+    {
+        //Acc setup
+        Wire.beginTransmission(BMI088_ADDRESS_ACC);
+        Wire.write(BMI088_ACC_CONF);
+        Wire.write(BMI088_ACC_BWP_OSR2<<4 | BMI088_ACC_ODR_1600);
+        Wire.endTransmission();
+
+        Wire.beginTransmission(BMI088_ADDRESS_ACC);
+        Wire.write(BMI088_ACC_RANGE);
+        Wire.write(BMI088_ACC_RANGE_3);
+        Wire.endTransmission();
+
+        Wire.beginTransmission(BMI088_ADDRESS_ACC);
+        Wire.write(BMI088_ACC_PWR_CONF);
+        Wire.write(0x00);
+        Wire.endTransmission();
+
+        Wire.beginTransmission(BMI088_ADDRESS_ACC);
+        Wire.write(BMI088_ACC_PWR_CTRL);
+        Wire.write(0x04);
+        Wire.endTransmission();
+
+        //Gyro Setup
+        Wire.beginTransmission(BMI088_ADDRESS_GYRO);
+        Wire.write(BMI088_GYRO_RANGE);
+        Wire.write(BMI088_GYRO_RANGE_2000);
+        Wire.endTransmission();
+
+        Wire.beginTransmission(BMI088_ADDRESS_GYRO);
+        Wire.write(BMI088_GYRO_BANDWIDTH);
+        Wire.write(BMI088_GYRO_ODR_2000_230);
+        Wire.endTransmission();
+
+        Wire.beginTransmission(BMI088_ADDRESS_GYRO);
+        Wire.write(BMI088_GYRO_LPM1);
+        Wire.write(0x00);
+        Wire.endTransmission();
+    }
+
+    void BMI088_RESET()
+    {
+        Wire.beginTransmission(BMI088_ADDRESS_ACC);
+        Wire.write(BMI088_ACC_SOFTRESET);
+        Wire.write(0xB6);
+        Wire.endTransmission();
+        delay(1000);
+        Wire.beginTransmission(BMI088_ADDRESS_GYRO);
+        Wire.write(BMI088_GYRO_SOFTRESET);
+        Wire.write(0xB6);
+        Wire.endTransmission();
+    }
+
+    void BMI088_ACC_RAW()
+    {
+        Wire.beginTransmission(BMI088_ADDRESS_ACC);
+        Wire.write(BMI088_ACC_X_LSB);
+        Wire.endTransmission();
+        Wire.requestFrom(BMI088_ADDRESS_ACC,6);
+        BMI088_DATA_X->Acc_X = (Wire.read());
+        BMI088_DATA_X->Acc_X = Wire.read()<<8 | BMI088_DATA_X->Acc_X;
+        BMI088_DATA_X->Acc_Y = Wire.read();
+        BMI088_DATA_X->Acc_Y = Wire.read()<<8 | BMI088_DATA_X->Acc_Y;
+        BMI088_DATA_X->Acc_Z = Wire.read();
+        BMI088_DATA_X->Acc_Z = Wire.read()<<8 | BMI088_DATA_X->Acc_Z;
+    }
+
+
+    void BMI088_GYRO_RAW()
+    {
+        Wire.beginTransmission(BMI088_ADDRESS_GYRO);
+        Wire.write(BMI088_GYRO_RATE_X_LSB);
+        Wire.endTransmission();
+        Wire.requestFrom(BMI088_ADDRESS_GYRO,6);
+        BMI088_DATA_X->Gyro_X = (Wire.read());
+        BMI088_DATA_X->Gyro_X = Wire.read()<<8 | BMI088_DATA_X->Gyro_X;
+        BMI088_DATA_X->Gyro_Y = Wire.read();
+        BMI088_DATA_X->Gyro_Y = Wire.read()<<8 | BMI088_DATA_X->Gyro_Y;
+        BMI088_DATA_X->Gyro_Z = Wire.read();
+        BMI088_DATA_X->Gyro_Z = Wire.read()<<8 | BMI088_DATA_X->Gyro_Z;
+    }
+
+
+
+    void BMI088_ACC_GYRO()
+    {
+        
+        BMI088_DATA_X->Acc_X_R = float(BMI088_DATA_X->Acc_X)/float(10920);
+        BMI088_DATA_X->Acc_Y_R = float(BMI088_DATA_X->Acc_Y)/float(10920);
+        BMI088_DATA_X->Acc_Z_R = float(BMI088_DATA_X->Acc_Z)/float(10920);
+        BMI088_DATA_X->Gyro_X_R = float(BMI088_DATA_X->Gyro_X)/float(16.384);
+        BMI088_DATA_X->Gyro_Y_R = float(BMI088_DATA_X->Gyro_Y)/float(16.384);
+        BMI088_DATA_X->Gyro_Z_R = float(BMI088_DATA_X->Gyro_Z)/float(16.384);
+    }
+
+    //Do the self test in the future 
+
+    void BMI088_TEST()
+    {
+        BMI088_GYRO_RAW();
+        BMI088_ACC_RAW();
+        BMI088_ACC_GYRO();
+        Serial.print("Gyro_x: ");
+        Serial.print(BMI088_DATA_X->Gyro_X_R);
+        Serial.print("Gyro_y: ");
+        Serial.print(BMI088_DATA_X->Gyro_Y_R);
+        Serial.print("Gyro_z: ");
+        Serial.print(BMI088_DATA_X->Gyro_Z_R);
+        Serial.println();
+    }
 };
-
-void BMI088_SETUP()
-{
-    //Acc setup
-    Wire.beginTransmission(BMI088_ADDRESS_ACC);
-    Wire.write(BMI088_ACC_CONF);
-    Wire.write(BMI088_ACC_BWP_OSR2<<3 | BMI088_ACC_ODR_1600);
-    Wire.endTransmission();
-
-    Wire.beginTransmission(BMI088_ADDRESS_ACC);
-    Wire.write(BMI088_ACC_RANGE);
-    Wire.write(BMI088_ACC_RANGE_3);
-    Wire.endTransmission();
-
-    Wire.beginTransmission(BMI088_ADDRESS_ACC);
-    Wire.write(BMI088_ACC_PWR_CONF);
-    Wire.write(0x00);
-    Wire.endTransmission();
-
-    Wire.beginTransmission(BMI088_ADDRESS_ACC);
-    Wire.write(BMI088_ACC_PWR_CTRL);
-    Wire.write(0x04);
-    Wire.endTransmission();
-
-    //Gyro Setup
-    Wire.beginTransmission(BMI088_ADDRESS_GYRO);
-    Wire.write(BMI088_GYRO_RANGE);
-    Wire.write(BMI088_GYRO_RANGE_250);
-    Wire.endTransmission();
-
-    Wire.beginTransmission(BMI088_ADDRESS_GYRO);
-    Wire.write(BMI088_GYRO_BANDWIDTH);
-    Wire.write(BMI088_GYRO_ODR_2000_230);
-    Wire.endTransmission();
-
-    Wire.beginTransmission(BMI088_ADDRESS_GYRO);
-    Wire.write(BMI088_GYRO_LPM1);
-    Wire.write(0x00);
-    Wire.endTransmission();
-}
-
-void BMI088_RESET()
-{
-    Wire.beginTransmission(BMI088_ADDRESS_ACC);
-    Wire.write(BMI088_ACC_SOFTRESET);
-    Wire.write(0xB6);
-    Wire.endTransmission();
-    delay(1000);
-    Wire.beginTransmission(BMI088_ADDRESS_GYRO);
-    Wire.write(BMI088_GYRO_SOFTRESET);
-    Wire.write(0xB6);
-    Wire.endTransmission();
-}
-
-void BMI088_ACC_RAW(BMI088_DATA* BMI088_DATA_X)
-{
-    Wire.beginTransmission(BMI088_ADDRESS_ACC);
-    Wire.write(BMI088_ACC_X_LSB);
-    Wire.endTransmission();
-    Wire.requestFrom(BMI088_ADDRESS_ACC,6);
-    BMI088_DATA_X->Acc_X = (Wire.read());
-    BMI088_DATA_X->Acc_X = Wire.read()<<8 | BMI088_DATA_X->Acc_X;
-    BMI088_DATA_X->Acc_Y = Wire.read();
-    BMI088_DATA_X->Acc_Y = Wire.read()<<8 | BMI088_DATA_X->Acc_Y;
-    BMI088_DATA_X->Acc_Z = Wire.read();
-    BMI088_DATA_X->Acc_Z = Wire.read()<<8 | BMI088_DATA_X->Acc_Z;
-}
-
-
-void BMI088_GYRO_RAW(BMI088_DATA* BMI088_DATA_X)
-{
-    Wire.beginTransmission(BMI088_ADDRESS_GYRO);
-    Wire.write(BMI088_GYRO_RATE_X_LSB);
-    Wire.endTransmission();
-    Wire.requestFrom(BMI088_ADDRESS_GYRO,6);
-    BMI088_DATA_X->Gyro_X = (Wire.read());
-    BMI088_DATA_X->Gyro_X = Wire.read()<<8 | BMI088_DATA_X->Gyro_X;
-    BMI088_DATA_X->Gyro_Y = Wire.read();
-    BMI088_DATA_X->Gyro_Y = Wire.read()<<8 | BMI088_DATA_X->Gyro_Y;
-    BMI088_DATA_X->Gyro_Z = Wire.read();
-    BMI088_DATA_X->Gyro_Z = Wire.read()<<8 | BMI088_DATA_X->Gyro_Z;
-}
-
-
-
-void BMI088_ACC_GYRO(BMI088_DATA* BMI088_DATA_X)
-{
-    
-    BMI088_DATA_X->Acc_X_R = float(BMI088_DATA_X->Acc_X)*2.f/32768.f;
-    BMI088_DATA_X->Acc_Y_R = float(BMI088_DATA_X->Acc_Y)*2.f/32768.f;
-    BMI088_DATA_X->Acc_Z_R = float(BMI088_DATA_X->Acc_Z)*2.f/32768.f;
-    BMI088_DATA_X->Gyro_X_R = float(BMI088_DATA_X->Gyro_X)*500.f/32768.f;
-    BMI088_DATA_X->Gyro_Y_R = float(BMI088_DATA_X->Gyro_Y)*500.f/32768.f;
-    BMI088_DATA_X->Gyro_Z_R = float(BMI088_DATA_X->Gyro_Z)*500.f/32768.f;
-}
-
-//Do the self test in the future 
-
-void BMI088_TEST(BMI088_DATA* BMI088_DATA_X)
-{
-    BMI088_GYRO_RAW(BMI088_DATA_X);
-    BMI088_ACC_RAW(BMI088_DATA_X);
-    BMI088_ACC_GYRO(BMI088_DATA_X);
-    Serial.print("Acc_x: ");
-    Serial.print(BMI088_DATA_X->Acc_X_R);
-    Serial.print("Acc_y: ");
-    Serial.print(BMI088_DATA_X->Acc_Y_R);
-    Serial.print("Acc_z: ");
-    Serial.print(BMI088_DATA_X->Acc_Z_R);
-    Serial.println();
-}
