@@ -19,7 +19,9 @@ In general we have the following:
 
 
 ```math
- T_n = \left\{(x_1,\dots,x_n):x_i \geq 0, \sum_{i=1}^n x_i \leq 1\right\}
+ x_{t} = Ax_{t-1}+Bu_{t-1}+w_{t-1}
+ \\
+ z_{t} = Cx_{t-1}+v_{t-1}
 ```
 Where $w_t$ and $v_t$ are gaussian random noise.
 \
