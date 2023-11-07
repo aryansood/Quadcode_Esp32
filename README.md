@@ -16,14 +16,12 @@ A quaternion based rotation rapresentation is used, for easier implementation of
 For understanding Kalman filter refer to appendix E of [[1]](#1) and to [[2]](#2).
 
 In general we have the following: 
-$$\begin{align}x_{t} = Ax_{t-1}+Bu_{t-1}+w_t \\
-z_t = M_{t-1}x_{t-1}+v_t\end{align}$$
+
+$$\begin{align}x_{t} = Ax_{t-1}+Bu_{t-1}+w_t \\z_t = M_{t-1}x_{t-1}+v_t\end{align}$$
 Where $w_t$ and $v_t$ are gaussian random noise.
 \
 In the case of the quadcopter, quaternions are used the equations are:
-$$
-\dot{q} = 
-$$
+$$\dot{q} = $$
 ## References
 <a id="1">[1]</a> 
  Dimitri P. Bertsekas,
