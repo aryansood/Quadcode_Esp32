@@ -14,9 +14,8 @@ Sensor used:
 A quaternion based rotation rapresentation is used, for easier implementation of the kalman filter. For understanding quaternions refer to [this](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjhxsfv96-CAxXcVPEDHbDWA_kQFnoECA8QAQ&url=https%3A%2F%2Fgraphics.stanford.edu%2Fcourses%2Fcs348a-17-winter%2FPapers%2Fquaternion.pdf&usg=AOvVaw3PvGFRNUboT5pRiKrHrWJZ&opi=89978449).
 \
 For understanding Kalman filter refer to appendix E of [[1]](#1) and to [[2]](#2).
-
-In general we have the following: 
-
+ \
+ In general we have the following: 
 
 ```math
 \begin{align}
@@ -28,6 +27,17 @@ In general we have the following:
 Where $w_t$ and $v_t$ are gaussian random noise.
 \
 In the case of the quadcopter, quaternions are used the equations are:
+```math
+\begin{align}
+q_{t} = \begin{pmatrix}
+  1       & x^1_0   & x^2_0   & \cdots  & x^{degree}_0  \\
+  1       & x^1_1   & x^2_1   & \cdots  & x^{degree}_1  \\
+  \vdots  & \vdots  & \vdots  & \ddots  & \vdots \\
+  1       & x^1_n   & x^2_n   & \cdots  & x^{degree}_n  \\
+\end{pmatrix}
+\end{align}
+```
+
 ## References
 <a id="1">[1]</a> 
  Dimitri P. Bertsekas,
