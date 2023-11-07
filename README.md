@@ -29,15 +29,7 @@ Where $w_t$ and $v_t$ are gaussian random noise.
 In the case of the quadcopter, quaternions are used the equations are:
 ```math
 \begin{align}
-q_{t} = \begin{pmatrix}
-  0 & 0 & 0 & 0 \\\
-  0 & 0 & 0 & 0 \\\
-  0 & 0 & 0 & 0 \\\
-  0 & 0 & 0 & 0 
-\end{pmatrix}
-\begin{pmatrix}
-q_{0} \\\ q_{1} \\\ q_{2} \\\ q_{3} 
-\end{pmatrix}
+\mathbf{\dot{q}} = \frac{1}{2}\mathbf{\Omega q}
 \end{align}
 ```
 
