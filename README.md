@@ -17,7 +17,9 @@ For understanding Kalman filter refer to appendix E of [[1]](#1) and to [[2]](#2
 
 In general we have the following: 
 
-$$x_{t} = Ax_{t-1}+Bu_{t-1}+w_t$$
+'''math
+x_{t} = Ax_{t-1}+Bu_{t-1}+w_t
+'''
 $$z_t= M_{t-1}x_{t-1}+v_t$$
 Where $w_t$ and $v_t$ are gaussian random noise.
 \
