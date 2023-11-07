@@ -18,12 +18,12 @@ For understanding Kalman filter refer to appendix E of [[1]](#1) and to [[2]](#2
 In general we have the following: 
 
 
-$$x_{t} = Ax_{t-1}+Bu_{t-1}+w_t$$
-$$z_t= M_{t-1}x_{t-1}+v_t$$
+```math
+ T_n = \left\{(x_1,\dots,x_n):x_i \geq 0, \sum_{i=1}^n x_i \leq 1\right\}
+```
 Where $w_t$ and $v_t$ are gaussian random noise.
 \
 In the case of the quadcopter, quaternions are used the equations are:
-$$\dot{q} =$$
 ## References
 <a id="1">[1]</a> 
  Dimitri P. Bertsekas,
