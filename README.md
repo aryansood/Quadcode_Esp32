@@ -30,10 +30,13 @@ In the case of the quadcopter, quaternions are used the equations are:
 ```math
 \begin{align}
 q_{t} = \begin{pmatrix}
-  1       & x^1_0   & x^2_0   & \cdots  & x^{degree}_0  \\
-  1       & x^1_1   & x^2_1   & \cdots  & x^{degree}_1  \\
-  \vdots  & \vdots  & \vdots  & \ddots  & \vdots \\
-  1       & x^1_n   & x^2_n   & \cdots  & x^{degree}_n  \\
+  0 & 0 & 0 & 0 \\\
+  0 & 0 & 0 & 0 \\\
+  0 & 0 & 0 & 0 \\\
+  0 & 0 & 0 & 0 
+\end{pmatrix}
+\begin{pmatrix}
+q_{0} \\\ q_{1} \\\ q_{2} \\\ q_{3} 
 \end{pmatrix}
 \end{align}
 ```
