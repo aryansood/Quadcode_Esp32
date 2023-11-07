@@ -29,7 +29,8 @@ $$\dot{q} = $$
 Dynamic Programming and Optimal Control, 
 Vol. I, 3rd Edition, ISBN-13978-1886529267
 
-<a id="2">[2]</a>Dan Simon,Optimal State Estimation, ISBN-13 978-0-471-70858-2
+<a id="2">[2]</a>
+ Dan Simon,Optimal State Estimation, ISBN-13 978-0-471-70858-2
 
 
 
