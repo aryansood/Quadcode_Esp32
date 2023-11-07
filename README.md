@@ -23,7 +23,7 @@ In general we have the following:
  x_{t} = Ax_{t-1}+Bu_{t-1}+w_{t-1}
  \\
  z_{t} = Cx_{t-1}+v_{t-1}
- \end{aling}
+ \end{align}
 ```
 Where $w_t$ and $v_t$ are gaussian random noise.
 \
