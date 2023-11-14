@@ -183,7 +183,13 @@ public:
         LSM6DSM_DATA_X->Gyro_Y_R = float(LSM6DSM_DATA_X->Gyro_Y)*500.f/32768.f;
         LSM6DSM_DATA_X->Gyro_Z_R = float(LSM6DSM_DATA_X->Gyro_Z)*500.f/32768.f;
     }
-    //Do the self test in the future 
+
+    void Get_data()
+    {
+        LSM6DSM_GYRO_RAW();
+        LSM6DSM_ACC_RAW();
+        LSM6DSM_ACC_GYRO();
+    };
 
     void LSM6DSM_TEST()
     {
@@ -199,5 +205,4 @@ public:
         Serial.println();
     }
 
-    //Do calibration of gyro and acc
 };

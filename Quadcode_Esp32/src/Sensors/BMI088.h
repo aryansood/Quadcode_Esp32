@@ -218,7 +218,12 @@ public:
         BMI088_DATA_X->Gyro_Z_R = float(BMI088_DATA_X->Gyro_Z)/float(16.384);
     }
 
-    //Do the self test in the future 
+    void Get_data()
+    {
+        BMI088_GYRO_RAW();
+        BMI088_ACC_RAW();
+        BMI088_ACC_GYRO();
+    }; 
 
     void BMI088_TEST()
     {

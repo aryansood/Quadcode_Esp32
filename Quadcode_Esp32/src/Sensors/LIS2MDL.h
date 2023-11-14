@@ -36,6 +36,7 @@
 
 class LIS2MDL_SENSOR
 {
+public:
     struct LIS2MDL_DATA
     {
         int16_t Mag_X;
@@ -88,6 +89,11 @@ class LIS2MDL_SENSOR
         LIS2MDL_DATA_X->Mag_Z_R = double(LIS2MDL_DATA_X->Mag_Z)*sensitivity;
     }
 
+    void Get_data()
+    {
+         LIS2MDL_MAG();
+    };
+
     void LIS2MDL_MAG_TEST()
     {
         LIS2MDL_MAG();
@@ -99,5 +105,5 @@ class LIS2MDL_SENSOR
         Serial.print(LIS2MDL_DATA_X->Mag_Z);
         Serial.println();
     }
-    //dO CALIBRATION
+
 };

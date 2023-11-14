@@ -1,6 +1,5 @@
 #include <Wire.h>
 #include <Arduino.h>
-#include <Kalman_Filter/Sensor_para_def.h>
 
 #define BMP388_CMD      0x7E
 #define BMP388_CONFIG   0x1F
@@ -309,13 +308,18 @@ public:
         }
         pres_average = pres_average/float(num_measure);
         se_press = (pres_average / pow(1.0 - (double(68.0) / 44307.7), 5.255302));
-        Alt_state[0].Pressure_offset = pres_average;
+        //Alt_state[0].Pressure_offset = pres_average;
     }
 
     void BMP388_PRESS_ALT_CONVERT()
     {
-        Alt_state[0].Altitude = BMP388_DATA_X->Pressure_real-se_press+STANDARD_SEA_LEVEL_PRESSURE_PA;
-        Alt_state[0].Altitude = (1.0 - pow(Alt_state[0].Altitude / double(STANDARD_SEA_LEVEL_PRESSURE_PA), 0.190284)) * 44307.7;
+        //Alt_state[0].Altitude = BMP388_DATA_X->Pressure_real-se_press+STANDARD_SEA_LEVEL_PRESSURE_PA;
+        //Alt_state[0].Altitude = (1.0 - pow(Alt_state[0].Altitude / double(STANDARD_SEA_LEVEL_PRESSURE_PA), 0.190284)) * 44307.7;
+    };
+
+    void Get_data()
+    {
+
     };
 
     void BMP388_ALT_TEST()
@@ -325,7 +329,7 @@ public:
         BMP388_TEMP_CALIBRATION();
         BMP388_PRESS_CALIBRATION();
         BMP388_PRESS_ALT_CONVERT();
-        Serial.print(Alt_state[0].Altitude);
+        //Serial.print(Alt_state[0].Altitude);
         Serial.println();
     }
 };
