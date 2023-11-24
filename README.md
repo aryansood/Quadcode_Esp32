@@ -7,7 +7,7 @@ Sensor used:
 - BMP388  (Acc-Gyro)
 - BMI088  (Barometer)
 ## Details
-- [Dshot explanation](Quadcode_Esp32/src/Motors_Control/README.md)
+- [Dshot Protocol](#dshot-esc-protocol)
 - [Kalman filter estimation](#kalman-filter-attitude-estimation)
 
 ## Kalman Filter Attitude Estimation
@@ -32,6 +32,13 @@ In the case of the quadcopter, quaternions are used the equations are:
 \mathbf{\dot{q}} = \frac{1}{2}\mathbf{\Omega q}
 \end{align}
 ```
+Before putting the accelerometers and the gyro into the kalman filter, we do a wheithed average repsective to the number of sensors.
+
+## Dshot Esc Protocol
+
+For understanding Dshot protocol go to [[3]](#3)
+I use Esp32 Rmt to send Dshot commands to the 4 Esc.
+Unfortunately setting the high and low level signal timing, by simple calculation was not working, so I had to use a digital analyzer, to see the data packet, and tuning by trial and error the correct value of the DSHOT_MODE struct field duration. As my esc is cheap, only the Dshot up to 300 works, and the inverse command does not. 
 
 ## References
 <a id="1">[1]</a> 
@@ -41,6 +48,9 @@ Vol. I, 3rd Edition, ISBN-13978-1886529267
 
 <a id="2">[2]</a>
  Dan Simon,Optimal State Estimation, ISBN-13 978-0-471-70858-2
+
+<a id="3">[3]</a> 
+ https://brushlesswhoop.com/dshot-and-bidirectional-dshot/
 
 
 

@@ -19,6 +19,7 @@ public:
         q1 = p1;
         q2 = p2;
         q3 = p3;
+        norm = q0*q0+q1*q1+q2*q2+q3*q3;
     }
 
     int Norm()
