@@ -37,8 +37,22 @@ Before putting the accelerometers and the gyro into the kalman filter, we do a w
 ## Dshot Esc Protocol
 
 For understanding Dshot protocol go to [[3]](#3)
-I use Esp32 Rmt to send Dshot commands to the 4 Esc.
-Unfortunately setting the high and low level signal timing, by simple calculation was not working, so I had to use a digital analyzer, to see the data packet, and tuning by trial and error the correct value of the DSHOT_MODE struct field duration. As my esc is cheap, only the Dshot up to 300 works, and the inverse command does not. 
+Esp32 Rmt is used to send Dshot commands to the 4 Esc.
+Unfortunately setting the high and low level signal timing, by simple calculation was not working, so the use of a digital analyzer was needed to see the data packet. The correct value of the DSHOT_MODE struct field duration was tuned by trial and error. As the Esc used for the Quadcopter is cheap, only the Dshot up to 300 works.
+The code should work in theory with each Dshot esc.
+
+Use DSHOT_MOTOR_SETUP to setup the motors, 
+```
+#define RMT_TX_GPIO_NUM_1 GPIO_NUM_16
+#define RMT_TX_GPIO_NUM_2 GPIO_NUM_17
+#define RMT_TX_GPIO_NUM_3 GPIO_NUM_18
+#define RMT_TX_GPIO_NUM_4 GPIO_NUM_19
+```
+Modify the GPIO numbers according to connection of the pins. 
+```
+enum DSHOT_VALUES {DSHOT_150, DSHOT_300, DSHOT_600};
+```
+In DSHOT_MOTOR_INITIALIZATION and DSHOT_MOTOR_SEND_THROTTLE change every instance of DSHOT_300, if there is need to use different speed for sending data. 
 
 ## References
 <a id="1">[1]</a> 
