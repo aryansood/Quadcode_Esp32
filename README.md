@@ -9,6 +9,7 @@ Sensor used:
 ## Details
 - [Dshot Protocol](#dshot-esc-protocol)
 - [Kalman filter estimation](#kalman-filter-attitude-estimation)
+- [Images](#images)
 
 ## Kalman Filter Attitude Estimation
 A quaternion based rotation rapresentation is used, for easier implementation of the kalman filter. For understanding quaternions refer to [this](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjhxsfv96-CAxXcVPEDHbDWA_kQFnoECA8QAQ&url=https%3A%2F%2Fgraphics.stanford.edu%2Fcourses%2Fcs348a-17-winter%2FPapers%2Fquaternion.pdf&usg=AOvVaw3PvGFRNUboT5pRiKrHrWJZ&opi=89978449).
@@ -53,6 +54,11 @@ Modify the GPIO numbers according to connection of the pins.
 enum DSHOT_VALUES {DSHOT_150, DSHOT_300, DSHOT_600};
 ```
 In DSHOT_MOTOR_INITIALIZATION and DSHOT_MOTOR_SEND_THROTTLE change every instance of DSHOT_300, if there is need to use different speed for sending data. 
+
+## Images
+
+![alt text](/Images/sensor_board.jpg)
+![alt text](/Images/Quadcopter_esp32.jpg)
 
 ## References
 <a id="1">[1]</a> 

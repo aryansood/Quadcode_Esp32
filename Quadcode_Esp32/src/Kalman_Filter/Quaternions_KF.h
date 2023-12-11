@@ -4,14 +4,14 @@ To do initialization quaternion rappresentation
 Calculation using Gyroscope entrypoints
 Every vector has a quaternion representaton with real part equal to zero
 */
+#pragma once
+#include <Kalman_Filter/Vector3.h>
+
 class Quaternion
 {
 public:
-    float q0;
-    float q1;
-    float q2;
-    float q3;
-    float norm = 1;
+    float q;
+    Vector3 q_dash;
 
     Quaternion (float p0,float p1,float p2,float p3)
     {
