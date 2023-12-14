@@ -10,56 +10,59 @@ Every vector has a quaternion representaton with real part equal to zero
 class Quaternion
 {
 public:
-    float q;
-    Vector3 q_dash;
+    float q0;
+    Vector3 q_d;
 
-    Quaternion (float p0,float p1,float p2,float p3)
+    Quaternion (float p0,float p1,float p2,float p3) : q_d(p1, p2, p3)
     {
         q0 = p0;
-        q1 = p1;
-        q2 = p2;
-        q3 = p3;
-        norm = q0*q0+q1*q1+q2*q2+q3*q3;
     }
 
-    int Norm()
+    float Norm()
     {
-        norm = q0*q0+q1*q1+q2*q2+q3*q3;
+        float norm = q0*q0+q_d.x*q_d.x+q_d.y*q_d.y+q_d.z*q_d.z;
         return norm;
     }
 
     void normalize()
     {
-        norm = q0*q0+q1*q1+q2*q2+q3*q3;
+        float norm = q0*q0+q_d.x*q_d.x+q_d.y*q_d.y+q_d.z*q_d.z;
         q0 = q0/norm;
-        q1 = q1/norm;
-        q2 = q2/norm;
-        q3 = q3/norm;
+        q_d.x = q_d.x/norm;
+        q_d.y = q_d.y/norm;
+        q_d.z = q_d.z/norm;
+    }
+
+    Quaternion add(Quaternion q_other)
+    {
+        Vector3 temp = q_d + q_other.q_d;
+        return Quaternion(q0+q_other.q0, temp.x, temp.y, temp.z);
+    }
+
+    float dot(Quaternion q_other)
+    {
+        return (q_d.dot(q_other.q_d)+q0*q_other.q0);
+    }
+
+    Quaternion cross(Quaternion q_other)
+    {
+        float real_part = q0*q_other.q0-q_d.dot(q_other.q_d);
+        Vector3 Imm_part = q_other.q_d.scalar_prod(q0) + q_d.scalar_prod(q_other.q0) + q_d*(q_other.q_d);
+    }
+
+    Quaternion operator*(Quaternion q_other)
+    {
+        return cross(q_other);
+    }
+
+    Vector3 rotation(Vector3 rot_vector)
+    {
+        normalize();
+        Quaternion q_rot(q0, q_d.x, q_d.y, q_d.z);
+        Quaternion q_rot_inv(q0, -q_d.x, -q_d.y, -q_d.z);
+        Quaternion vec_rot_q( 0.0, rot_vector.x, rot_vector.y, rot_vector.z);
+        Quaternion rot_result = q_rot*(vec_rot_q*q_rot_inv); 
+        return rot_result.q_d;
     }
 };
-
-Quaternion Quaternion_sum(Quaternion v1, Quaternion v2)
-{
-    Quaternion v3(v1.q0+v2.q0,v1.q1+v2.q1,v1.q2+v2.q2,v1.q3+v2.q3);
-    return v3;
-};
-
-Quaternion Quaternion_multi(Quaternion v1, Quaternion v2)
-{
-    Quaternion v3(0,0,0,0);
-    v3.q0 = (v1.q0*v2.q0)-(v1.q1*v2.q1+v1.q2*v2.q2+v1.q3*v2.q3);
-    v3.q1 = (v1.q0*v2.q1)+(v2.q0*v1.q1)+(v1.q2*v2.q3-v1.q3*v2.q2);
-    v3.q2 = (v1.q0*v2.q2)+(v2.q0*v1.q2)+(v1.q3*v2.q1-v1.q1*v2.q3);
-    v3.q3 = (v1.q0*v2.q3)+(v2.q0*v1.q3)+(v1.q1*v2.q2-v1.q2*v2.q1);
-};
-
-Quaternion Quaternion_rotation(Quaternion q, Quaternion v)
-{
-    Quaternion l(0,0,0,0);
-    Quaternion q_conj(q.q0,-q.q1,-q.q2,-q.q3);
-    q.normalize();
-    l = Quaternion_multi(v,q_conj);
-    l = Quaternion_multi(q,l);
-}
-
 //Test this code
