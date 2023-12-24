@@ -5,7 +5,7 @@ Calculation using Gyroscope entrypoints
 Every vector has a quaternion representaton with real part equal to zero
 */
 #pragma once
-#include <Kalman_Filter/Vector3.h>
+#include <Vector_Library/Vector3.h>
 
 class Quaternion
 {

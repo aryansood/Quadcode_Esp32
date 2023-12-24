@@ -1,10 +1,29 @@
 Order of prociding:
-- Correctly rigth the sensor code
 - Kalman filtering Code
 - Communication simple one
 - Simple control
 - Communication complex one
 - Complex control
+
+Kalman Filter:
+- Use of acc and mag as measurement matrix. 
+
+Matrix:
+- All definition will be done outside to prevent memory leak.
+
+
+List in order:
+- Check if vector code+quaternions+Matrix is working without problem.
+- Matrix operation code
+- First thingh is calibration.
+- Complete Kalman Filter
+- Do a full state estimation
+- Communication part
+- Rtos Task creation and division
+- Manual control code
+- Control algorithm
+- Advance autonomous controller 
+
 
 
 BMP388:
@@ -22,9 +41,6 @@ LIS2MDL:
 - Converting raw data to readable
 
 BMP388:
-- Why registers gives only values of zero ?
-- Check how to calibrate
-- Converting raw data to readable
 - Sensor Testing 
 
 Filtering Kalman:
