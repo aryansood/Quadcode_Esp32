@@ -1,14 +1,20 @@
 {
 	"folders": [
 		{
+			"path": "common"
+		},
+		{
 			"path": "Quadcode_Esp32"
+		},
+		{
+			"path": "Quadcode_sim"
 		},
 		{
 			"path": "Ground_station"
 		},
 		{
 			"path": "."
-		}
+		},
 	],
 	"settings": {}
 }

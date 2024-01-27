@@ -3,7 +3,7 @@ Definition of the number of sensors used, and their typed, abstarcted from the r
 Link between the definitions and the physical sensors done in /Sensors/Sensor_data.h
 */
 #pragma once
-#include<Sensors/Sensors_entrypoint.h>
+#include<Sensors_entrypoint.h>
 #include<Sensors/BMI088.h>
 #include<Sensors/LIS2MDL.h>
 #include<Sensors/LSM6DSM.h>
