@@ -68,10 +68,12 @@ Vol. I, 3rd Edition, ISBN-13978-1886529267
  https://brushlesswhoop.com/dshot-and-bidirectional-dshot/
 
 ## Images
-
+<!---
 ![alt text](/Images/sensor_board.jpg =100x20)
 ![alt text](/Images/Quadcopter_esp32.jpg =100x20)
-
+-->
+<img src="/Images/sensor_board.jpg" alt="drawing" width="200"/>
+<img src="/Images/Quadcopter_esp32.jpg" alt="drawing" width="200"/>
 
 
 
