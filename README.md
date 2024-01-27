@@ -55,11 +55,6 @@ enum DSHOT_VALUES {DSHOT_150, DSHOT_300, DSHOT_600};
 ```
 In DSHOT_MOTOR_INITIALIZATION and DSHOT_MOTOR_SEND_THROTTLE change every instance of DSHOT_300, if there is need to use different speed for sending data. 
 
-## Images
-
-![alt text](/Images/sensor_board.jpg)
-![alt text](/Images/Quadcopter_esp32.jpg)
-
 ## References
 <a id="1">[1]</a> 
  Dimitri P. Bertsekas,
@@ -71,6 +66,13 @@ Vol. I, 3rd Edition, ISBN-13978-1886529267
 
 <a id="3">[3]</a> 
  https://brushlesswhoop.com/dshot-and-bidirectional-dshot/
+
+## Images
+
+![alt text](/Images/sensor_board.jpg)
+![alt text](/Images/Quadcopter_esp32.jpg)
+
+
 
 
 
