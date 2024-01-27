@@ -69,8 +69,8 @@ Vol. I, 3rd Edition, ISBN-13978-1886529267
 
 ## Images
 
-![alt text](/Images/sensor_board.jpg | width=100)
-![alt text](/Images/Quadcopter_esp32.jpg | width=100)
+![alt text](/Images/sensor_board.jpg =100x20)
+![alt text](/Images/Quadcopter_esp32.jpg =100x20)
 
 
 
