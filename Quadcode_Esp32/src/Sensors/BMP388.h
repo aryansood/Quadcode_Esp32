@@ -298,11 +298,11 @@ public:
         int num_measure = 1000;
         float pres_average = 0;
         for(int i = 0;i<num_measure;i++)
-        {
+        { 
             BMP388_PRESS_RAW();
-        BMP388_TEMP_RAW();
-        BMP388_TEMP_CALIBRATION();
-        BMP388_PRESS_CALIBRATION();
+            BMP388_TEMP_RAW();
+            BMP388_TEMP_CALIBRATION();
+            BMP388_PRESS_CALIBRATION();
             
             pres_average += BMP388_DATA_X->Pressure_real;
         }
