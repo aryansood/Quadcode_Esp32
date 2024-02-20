@@ -5,6 +5,14 @@ Matrix def, op: sum, mult, inverse(square), SVD, Identity matrix, constant multi
 For Quaternion multiplication just create a a matrix and then just pass the value and reget original matrix.
 */
 
+template <typename T, typename U>
+struct Pair {
+    T first;
+    U second;
+
+    Pair(const T& f, const U& s) : first(f), second(s){}
+};
+
 class Matrix
 {
 public:
@@ -83,4 +91,23 @@ public:
         return ret_mat;
     }
 
+    //LU decomposition in an inteligent way can be used to find The K matrix of the Kalman Filter
+    //We will do LU and solve system of equation + inverse with using 
+
+    Pair<Matrix, Matrix> PLU_dec()
+    {
+        Matrix A(num_row, num_col);
+        Matrix P(num_row);
+        for(int i = 0;i<num_row;i++)
+        {
+            for(int j = 0;j<num_col;j++)
+            {
+                A.m[i][j] = m[i][j];
+            }
+        }
+        
+    }
+    
+
+        
 };
