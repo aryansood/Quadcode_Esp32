@@ -1,0 +1,4 @@
+Setup gazebo + ros, use common folder, control algorithm and so on are part of the common library
+Need to get the sensors up and running of gazebo, check kalaman filter and implement some easy Ros nodes for doing stuff 
+easily with gazebo, especially for sending commands using ros nodes to the simulator, all the computaton doemn using the 
+Library.
