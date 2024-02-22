@@ -13,7 +13,7 @@ struct Pair {
     Pair(T f, U s) : first(f), second(s){}
 };
 
-float abs(int a) {return ((a>=0) ? a : -a);}
+float abs_n(int a) {return ((a>=0) ? a : -a);}
 
 class Matrix
 {
@@ -70,6 +70,19 @@ public:
         }
     }
 
+    Matrix sub(Matrix other)
+    {
+        if(other.num_row == num_row && other.num_col == num_col)
+        {
+            Matrix ret_mat = Matrix(num_row,num_col);
+            for(int i = 0;i<num_row;i++)
+            {
+                for(int j = 0;j<num_col;j++) ret_mat[i][j] = m[i][j]-other[i][j];
+            }
+            return ret_mat;
+        }
+    }
+
     void row_exchange(int i, int j)
     {
         if(i<num_row && j<num_row && i!=j)
@@ -95,7 +108,7 @@ public:
                     ret_mat[i][j] = 0.0;
                     for(int z = 0;z<num_col;z++)
                     {
-                        ret_mat[i][j] += m[i][z]+other[z][j];
+                        ret_mat[i][j] += m[i][z]*other[z][j];
                     }
                 }
             }
@@ -134,7 +147,7 @@ public:
             int max_r = k;
             for(int r  = k+1;r<size_m;r++)
             {
-                if(abs(A[r][k]) > abs(A[max_r][k])) max_r = r;
+                if(abs_n(A[r][k]) > abs_n(A[max_r][k])) max_r = r;
             }
             A.row_exchange(k,max_r);
             P.row_exchange(k,max_r);
