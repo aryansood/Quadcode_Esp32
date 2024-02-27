@@ -1,6 +1,7 @@
 #include<iostream>
 #include<fstream>
 #include</home/aryan/Desktop/Quadcode_Esp32/common/Vector_Library/Matrix.h>
+#include <iomanip>
 using namespace std;
 
 int main()
@@ -132,5 +133,110 @@ int main()
             outputFile<<endl;
          }
     }
+    else if (num_of_testing == 3)
+    {
+        int num_cases;
+        inputfile>>num_cases;
+        for(int z = 0;z<num_cases;z++)
+        {
+            int a;
+            float sporco;
+            inputfile>>a;
+            Matrix A(a,a);
+            Matrix P(a,a);
+            Matrix LU(a,a);
+            for(int i = 0;i<a;i++)
+            {
+                for(int j = 0;j<a;j++)
+                {
+                    inputfile>>A[i][j];
+                }
+            }
+
+            for(int i = 0;i<a;i++)
+            {
+                for(int j = 0;j<a;j++)
+                {
+                    inputfile>>sporco;
+                }
+            }
+
+            for(int i = 0;i<a;i++)
+            {
+                for(int j = 0;j<a;j++)
+                {
+                    inputfile>>sporco;
+                }
+            }
+
+            for(int i = 0;i<a;i++)
+            {
+                for(int j = 0;j<a;j++)
+                {
+                    inputfile>>sporco;
+                }
+            }
+
+            Pair<Matrix,Matrix> DA = A.PLU_dec();
+            P = DA.first;
+            LU = DA.second;
+
+            Matrix L(a);
+            Matrix U(a);
+
+            for(int i = 0;i<a;i++)
+            {
+                for(int j = 0;j<i;j++)
+                {
+                    L[i][j] = LU[i][j];
+                }
+            }
+
+            for(int i = 0;i<a;i++)
+            {
+                for(int j = i;j<a;j++)
+                {
+                    U[i][j] = LU[i][j];
+                }
+            }
+
+            Matrix Temp1 = A.inverse();
+            Matrix Temp2 = A.mul(Temp1);
+
+            for(int i = 0;i<a;i++)
+            {
+                for(int j = 0;j<a;j++)
+                {
+                    outputFile<<P[i][j];
+                    outputFile<<" ";
+                }
+                outputFile<<endl;
+            }
+            outputFile<<endl;
+
+            for(int i = 0;i<a;i++)
+            {
+                for(int j = 0;j<a;j++)
+                {
+                    outputFile<<std::fixed << std::setprecision(8)<<Temp2[i][j];
+                    outputFile<<" ";
+                }
+                outputFile<<endl;
+            }
+            outputFile<<endl;
+            for(int i = 0;i<a;i++)
+            {
+                for(int j = 0;j<a;j++)
+                {
+                    outputFile<<std::fixed << std::setprecision(8)<<Temp1[i][j];
+                    outputFile<<" ";
+                }
+                outputFile<<endl;
+            }
+            outputFile<<endl;
+
+        }
+    }
+    
     return 0;
 }

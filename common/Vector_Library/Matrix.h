@@ -4,7 +4,9 @@ Matrix def, op: sum, mult, inverse(square), SVD, Identity matrix, constant multi
 /*
 For Quaternion multiplication just create a a matrix and then just pass the value and reget original matrix.
 */
-
+#include<iostream>
+#include <iomanip>
+using namespace std;
 template <typename T, typename U>
 struct Pair {
     T first;
@@ -20,15 +22,15 @@ class Matrix
 public:
     int num_row;
     int num_col;
-    float ** m;
+    double ** m;
 
     //Identity Matrix
     Matrix (int num)
     {
         num_row = num;
         num_col = num;
-        m = new float*[num];
-        for(int i = 0;i<num;i++) m[i] = new float[num];
+        m = new double*[num];
+        for(int i = 0;i<num;i++) m[i] = new double[num];
         for(int i = 0;i<num;i++)
         {
             for(int j = 0;j<num;j++) m[i][j] = 0.0;
@@ -40,15 +42,15 @@ public:
     {
         num_row = rs;
         num_col = cs;
-        m = new float*[rs];
-        for(int i = 0;i<rs;i++) m[i] = new float[cs];
+        m = new double*[rs];
+        for(int i = 0;i<rs;i++) m[i] = new double[cs];
         for(int i = 0;i<num_row;i++)
         {
             for(int j = 0;j<num_col;j++) m[i][j] = 0.0;
         }
     }
 
-    float* operator[](int index) {
+    double* operator[](int index) {
         return m[index];
     }
 
@@ -174,9 +176,10 @@ public:
         if(B.num_row == P.num_col)
         {
             int num_of_solving = B.num_col;
+            cout<<B.num_col;
             int num_size = A.num_row;
-            Matrix t1 = P.mul(B);
-            
+            B = P.mul(B);
+            //Matrix t1 = P.mul(B);
             for(int s = 0;s<num_of_solving;s++)
             {
                 y[0][s] = B[0][s];
@@ -198,7 +201,7 @@ public:
                 }
             }
         }
-      //Assertion not valid;
+        return x;
     }
 
     Matrix inverse()
