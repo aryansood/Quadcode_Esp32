@@ -1,8 +1,8 @@
 class Vector3
 {
     public:
-    float x,y,z;
-    float norm;
+    double x,y,z;
+    double norm;
 
     Vector3(float x, float y, float z) : x(x), y(y), z(z) {norm = 0;}
 
@@ -19,6 +19,16 @@ class Vector3
     Vector3 operator+(Vector3 other)
     {
         return add(other);
+    }
+
+    Vector3 sub(Vector3 other)
+    {
+        return Vector3(x-other.x, y-other.y,z-other.z);
+    }
+
+    Vector3 operator-(Vector3 other)
+    {
+        return sub(other);
     }
 
     float dot(Vector3 other)
@@ -40,7 +50,7 @@ class Vector3
         return cross(other);
     }
 
-    Vector3 scalar_prod(float mult_const)
+    Vector3 scalar_prod(double mult_const)
     {
         return Vector3(mult_const*x, mult_const*y, mult_const*z);
     }

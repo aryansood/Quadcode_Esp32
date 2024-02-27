@@ -146,7 +146,6 @@ public:
             P.row_exchange(k,max_r);
             for(int i = k+1;i<size_m;i++)
             {
-                //We are now going to do l[i][k] which is the lower triangular matrix
                 A[i][k] = A[i][k]/A[k][k];
                 for(int j = k+1;j<size_m;j++)
                 {
@@ -170,7 +169,6 @@ public:
             cout<<B.num_col;
             int num_size = A.num_row;
             B = P.mul(B);
-            //Matrix t1 = P.mul(B);
             for(int s = 0;s<num_of_solving;s++)
             {
                 y[0][s] = B[0][s];

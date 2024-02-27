@@ -27,5 +27,10 @@ struct Mag
     float Mag_z;
 };
 
+struct GPS
+{
+    //Latitude, Longitude
+};
+
 
 
