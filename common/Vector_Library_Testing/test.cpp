@@ -218,7 +218,7 @@ int main()
             {
                 for(int j = 0;j<a;j++)
                 {
-                    outputFile<<std::fixed << std::setprecision(8)<<Temp2[i][j];
+                    outputFile<<std::fixed << std::setprecision(2)<<Temp2[i][j];
                     outputFile<<" ";
                 }
                 outputFile<<endl;
