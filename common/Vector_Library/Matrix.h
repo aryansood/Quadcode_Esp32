@@ -1,12 +1,3 @@
-/*
-Matrix def, op: sum, mult, inverse(square), SVD, Identity matrix, constant multip, vector multi.
-*/
-/*
-For Quaternion multiplication just create a a matrix and then just pass the value and reget original matrix.
-*/
-#include<iostream>
-#include <iomanip>
-using namespace std;
 template <typename T, typename U>
 struct Pair {
     T first;

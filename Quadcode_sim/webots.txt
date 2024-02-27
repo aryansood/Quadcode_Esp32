@@ -1,0 +1,1 @@
+Webots will be used to simulate the quadcopters.
