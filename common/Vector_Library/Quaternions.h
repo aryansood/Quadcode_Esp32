@@ -10,7 +10,7 @@ Every vector has a quaternion representaton with real part equal to zero
 class Quaternion
 {
 public:
-    float q0;
+    double q0;
     Vector3 q_d;
 
     Quaternion (float p0,float p1,float p2,float p3) : q_d(p1, p2, p3)
@@ -20,13 +20,13 @@ public:
 
     float Norm()
     {
-        float norm = q0*q0+q_d.x*q_d.x+q_d.y*q_d.y+q_d.z*q_d.z;
+        double norm = q0*q0+q_d.x*q_d.x+q_d.y*q_d.y+q_d.z*q_d.z;
         return norm;
     }
 
     void normalize()
     {
-        float norm = q0*q0+q_d.x*q_d.x+q_d.y*q_d.y+q_d.z*q_d.z;
+        double norm = q0*q0+q_d.x*q_d.x+q_d.y*q_d.y+q_d.z*q_d.z;
         q0 = q0/norm;
         q_d.x = q_d.x/norm;
         q_d.y = q_d.y/norm;
@@ -46,7 +46,7 @@ public:
 
     Quaternion cross(Quaternion q_other)
     {
-        float real_part = q0*q_other.q0-q_d.dot(q_other.q_d);
+        double real_part = q0*q_other.q0-q_d.dot(q_other.q_d);
         Vector3 Imm_part = q_other.q_d.scalar_prod(q0) + q_d.scalar_prod(q_other.q0) + q_d*(q_other.q_d);
     }
 

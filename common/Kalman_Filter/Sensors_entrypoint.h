@@ -2,29 +2,29 @@
 
 struct Acc
 {
-    float Acc_x;
-    float Acc_y;
-    float Acc_z;
+    double Acc_x;
+    double Acc_y;
+    double Acc_z;
 };
 
 struct Gyro
 {
-    float Gyro_x;
-    float Gyro_y;
-    float Gyro_z;
+    double Gyro_x;
+    double Gyro_y;
+    double Gyro_z;
 };
 
 struct Altitude
 {
-    float Altitude;
-    float Pressure_offset;
+    double Altitude;
+    double Pressure_offset;
 };
 
 struct Mag
 {
-    float Mag_x;
-    float Mag_y;
-    float Mag_z;
+    double Mag_x;
+    double Mag_y;
+    double Mag_z;
 };
 
 struct GPS

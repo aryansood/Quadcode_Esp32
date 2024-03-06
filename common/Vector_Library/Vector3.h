@@ -31,7 +31,7 @@ class Vector3
         return sub(other);
     }
 
-    float dot(Vector3 other)
+    double dot(Vector3 other)
     {
         return (x*other.x+y*other.y+z*other.z);
     }
