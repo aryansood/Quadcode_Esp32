@@ -41,6 +41,16 @@ public:
         }
     }
 
+    Matrix (double** A, int rs, int cs){
+        num_row = rs;
+        num_col = cs;
+        m = new double*[rs];
+        for(int i = 0;i<rs;i++) m[i] = new double[cs];
+        for(int i = 0;i<rs;i++){
+            for(int j = 0;j<cs;j++) m[i][j] = A[i][j];
+        }
+    }
+
     double* operator[](int index) {
         return m[index];
     }
