@@ -73,6 +73,11 @@ public:
         }
     }
 
+    Matrix operator+(Matrix other)
+    {
+        return add(other);
+    }
+
     Matrix sub(Matrix other)
     {
         if(other.num_row == num_row && other.num_col == num_col)
@@ -84,6 +89,11 @@ public:
             }
             return ret_mat;
         }
+    }
+
+    Matrix operator-(Matrix other)
+    {
+        return sub(other);
     }
 
     void row_exchange(int i, int j)
@@ -117,6 +127,11 @@ public:
             }
             return ret_mat;
         }
+    }
+
+    Matrix operator*(Matrix other)
+    {
+        return mul(other);
     }
 
     Matrix Tran()
